@@ -1,4 +1,4 @@
-require('dotenv').config(); // Load .env at the top
+require('dotenv').config(); 
 
 const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
@@ -10,7 +10,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// Ensure env variables are loaded
+// env variables are loaded
 if (!process.env.AUTH_SERVICE_URL || !process.env.PRODUCT_SERVICE_URL || 
     !process.env.ORDER_SERVICE_URL || !process.env.PAYMENT_SERVICE_URL) {
     throw new Error("One or more service URLs are missing in .env file!");
@@ -22,8 +22,8 @@ app.use(morgan('combined')); // Logging middleware
 
 // Rate Limiting
 const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Limit each IP to 100 requests per windowMs
+    windowMs: 15 * 60 * 1000, // 
+    max: 100, 
     message: "Too many requests, please try again later."
 });
 app.use(limiter);
@@ -42,7 +42,7 @@ const authenticateToken = (req, res, next) => {
 
 // Proxy Routes with Authentication
 app.use('/auth', createProxyMiddleware({ target: process.env.AUTH_SERVICE_URL, changeOrigin: true,pathRewrite: { 
-    '^/auth/signup': '/frontend/signup/',  // 🔥 Fix this mapping
+    '^/auth/signup': '/frontend/signup/', 
     '^/auth/login': '/auth/login' 
 },
     onProxyReq: (proxyReq, req, res) => {
